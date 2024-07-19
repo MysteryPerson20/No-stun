@@ -1,0 +1,33 @@
+-- Function to check if a string can be converted to a number
+function isNumber(str)
+    return tonumber(str) ~= nil or str == 'inf'
+end
+
+-- Configuration
+local tspeed = 0.3  -- Teleportation speed
+
+-- Services
+local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
+
+-- Local Player and Character
+local player = Players.LocalPlayer
+local chr = player.Character or player.CharacterAdded:Wait()
+local hum = chr:FindFirstChildOfClass("Humanoid")
+
+-- Function to handle teleportation
+local function handleTeleportation()
+    while true do
+        RunService.Heartbeat:Wait()  -- Wait for the next frame
+        if hum and hum.Parent and hum.MoveDirection.Magnitude > 0 then
+            if isNumber(tspeed) then
+                chr:TranslateBy(hum.MoveDirection * tspeed)
+            else
+                chr:TranslateBy(hum.MoveDirection)
+            end
+        end
+    end
+end
+
+-- Start handling teleportation
+handleTeleportation()
